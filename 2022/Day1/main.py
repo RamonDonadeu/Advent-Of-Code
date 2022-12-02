@@ -1,5 +1,5 @@
 # Using readlines()
-file = open('AdventCalendar/Day1/data.txt', 'r')
+file = open('data.txt', 'r')
 Lines = file.readlines()
 
 elve = 1
@@ -26,8 +26,6 @@ print("Elve " + str(elve) + " has " + str(maxCalories) + " Calories Stored")
 maxCalories= [0,0,0]
 countCalories= 0
 countElve = 1
-
-# Part 1
 
 for (line) in Lines:
     if(line=='\n'):
