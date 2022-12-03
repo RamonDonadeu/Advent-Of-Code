@@ -1,3 +1,6 @@
+import os 
+file = (os.path.dirname(os.path.realpath(__file__))) + "\data.txt"
+file = open(file, 'r')
 
 ROCK = 'A'
 PAPER= 'B'
@@ -58,8 +61,7 @@ def resultTwo(oponent, you):
             return 3 + 3
         if(you == WIN):
             return 1 + 6
-
-file = open('data.txt', 'r')
+            
 Lines = file.readlines()
 
 # Part 1
