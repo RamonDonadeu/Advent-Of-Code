@@ -8,6 +8,7 @@ monkeyItems = []
 itemsCount=[]
 monkeyInstructions = []
 counter=-1
+bigmod = 1
 
 # ==================== PREPARATION ===============
 
@@ -29,6 +30,7 @@ for line in Lines :
             monkeyInstructions[counter]['operation']=line.split('old')[1]
         elif(line[2:6]=='Test'):
             monkeyInstructions[counter]['divide']=int(line.split('by')[1])
+            bigmod*=monkeyInstructions[counter]['divide']
         elif(line[7:11]=='true'):
             monkeyInstructions[counter]['true']=int(line.split('monkey')[1])
         elif(line[7:12]=='false'):
@@ -87,13 +89,13 @@ for round in range(10000):
         for item in monkeyItems[monkey]:
             itemsCount[monkey]+=1
             if (monkeyInstructions[monkey]['operation'].split(' ')[2]==''):
-                worryLevel = int(eval(str(item)+monkeyInstructions[monkey]['operation'].split(' ')[1]+str(item)))
+                worryLevel = int(eval(str(item)+monkeyInstructions[monkey]['operation'].split(' ')[1]+str(item)) % bigmod)
             else:
-                worryLevel = int(eval(str(item)+monkeyInstructions[monkey]['operation']))
+                worryLevel = int(eval(str(item)+monkeyInstructions[monkey]['operation']) % bigmod)
             if(worryLevel % monkeyInstructions[monkey]['divide'] == 0):
-                monkeyItems[monkeyInstructions[monkey]['true']].append(worryLevel% monkeyInstructions[monkey]['divide'])
+                monkeyItems[monkeyInstructions[monkey]['true']].append(worryLevel)
             else:
-                monkeyItems[monkeyInstructions[monkey]['false']].append(worryLevel% monkeyInstructions[monkey]['divide'])        
+                monkeyItems[monkeyInstructions[monkey]['false']].append(worryLevel)        
         monkeyItems[monkey]=[]
     
     if(round % 100 == 0):
