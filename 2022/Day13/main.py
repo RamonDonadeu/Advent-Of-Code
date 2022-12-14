@@ -7,66 +7,42 @@ Lines = file.readlines()
 
 def checkMessage(left, right):
     try:
+        if(type(left) == int):
+            if(type(right) == int):
+                return left-right
+            else:
+                return checkMessage([left],right)
+        else:
+            if(type(right) == int):
+                return checkMessage(left, [right])
+        
         for leftElement, rightElement in zip(left,right):
-            if(type(leftElement) == int and type(rightElement) == int):
-                if(leftElement < rightElement ):
-                    return 'Right'
-                elif(leftElement > rightElement):
-                    return 'Wrong'
-                else:
-                    result = 'Equal'
-            if(type(leftElement) == list and type(rightElement) == list):
-            #     compare='Wrong'
-                result = checkMessage(leftElement,rightElement)
-                if(result != 'Equal'):
-                    return result
-            if(type(leftElement) == list and type(rightElement) == int or type(leftElement) == int and type(rightElement) == list):
-                if(type(rightElement) == int):
-                    rightElement=[rightElement]
-                else:
-                    leftElement=[leftElement]
-                
-                result = checkMessage(leftElement,rightElement)
-        if(len(left)>len(right)):
-            return 'Worng'
-        elif(len(left)<len(right)):
-            return 'Right'
-        else: return result
+            result = checkMessage(leftElement,rightElement)
+            if result:
+                return result
+        
+        return len(left) - len(right)
     except:
         return 'Wrong'
-
-def createPackage(line):
-    package=[]
-    inside = 0
-    for i in range(len(line)):
-        if(line[i] != ','):
-            if(line[i]=='['):
-                if(inside == 0):
-                    package.append(createPackage(line[i+1:]))
-                inside += 1
-            elif(line[i]==']'):
-                if(inside == 0):
-                    return package
-                else:
-                    inside -= 1
-                
-            elif(inside == 0):
-                package.append(int(line[i]))
-    return package
-
-
 
 twoRows = 0
 left=[]
 right=0
 counter = 1
+i2 = 1
+i6 = 2
+
 for line in Lines:
     line = line.split('\n')[0]
     if(line!=''):
-        recieved = createPackage(line[1:-1])
+        recieved = eval(line)
+        if checkMessage(recieved, [[2]]) < 0:
+            i2 += 1
+            i6 += 1
+        elif checkMessage(recieved, [[6]]) < 0:
+            i6 += 1
         if(twoRows % 2 == 1):
-            result = checkMessage(left,recieved)
-            if(result == 'Right'):
+            if checkMessage(left,recieved) < 0:
                 right += counter
             counter += 1
         else:
@@ -74,6 +50,7 @@ for line in Lines:
         twoRows+=1
 
 print('The sum of pair of packages is ' + str(right))
+print('The decoder key is '+ str(i2*i6))
 
     
         
