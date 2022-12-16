@@ -7,14 +7,15 @@ Lines = file.readlines()
 
 mapCoords={'left':'','right':'','top':'','bot':''}
 sensors=[]
+impossible = set()
 
 def getDistance(origin, destination):
-    return math.ceil( math.sqrt((origin['x'] - destination['x'])**2+(origin['y']-destination['y'])**2))
+    a = abs(origin['x'] - destination['x'])
+    b =abs(origin['y']-destination['y'])
+    return a+b
 
 def positionOcupied(coord):
     for sensor in sensors:
-        if(sensor['sensor']['x'] == coord['x'] and sensor['sensor']['y'] == coord['y']):
-            return True
         if(sensor['beacon']['x'] == coord['x'] and sensor['beacon']['y'] == coord['y']):
             return True
     return False
@@ -44,16 +45,14 @@ for line in Lines:
         mapCoords['top']=coord['beacon']['y']
 
 checkRow = 2000000
-counter = 0
-for col in range(mapCoords['left'],mapCoords['right']):
-    if(not positionOcupied({'x': col, 'y': checkRow})):
-        for sensor in sensors:
-            if(getDistance({'x': col, 'y': checkRow}, sensor['sensor']) <= sensor['distance']):
-                counter+=1
-                break
-           
-
-print(counter)
+for sensor in sensors:
+    distance = sensor['distance']
+    farAway = distance - abs(sensor['sensor']['y']-checkRow)
+    for column in range(sensor['sensor']['x'] - farAway, sensor['sensor']['x']+farAway+1):
+        if(not positionOcupied({'x':column,'y':checkRow})):
+            impossible.add(column)
+    
+print(len(impossible))
 
 
         
