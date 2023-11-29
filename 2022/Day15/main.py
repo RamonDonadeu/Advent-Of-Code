@@ -1,7 +1,7 @@
 import os 
 import time
 import math
-file = (os.path.dirname(os.path.realpath(__file__))) + "\data.txt"
+file = (os.path.dirname(os.path.realpath(__file__))) + "/data.txt"
 file = open(file, 'r')
 Lines = file.readlines()
 
@@ -45,63 +45,46 @@ for line in Lines:
         mapCoords['top']=coord['beacon']['y']
 
 checkRow = 10
-topRight = set()
-topLeft =set()
-botRight = set()
-botLeft = set()
-
 for sensor in sensors:
     distance = sensor['distance']
     farAway = distance - abs(sensor['sensor']['y']-checkRow)
     for column in range(sensor['sensor']['x'] - farAway, sensor['sensor']['x']+farAway+1):
         if(not positionOcupied({'x':column,'y':checkRow})):
             impossible.add(column)
-
-    topPosition = sensor['sensor']['y'] - distance
-    botPosition = sensor['sensor']['y'] + distance
-    leftPosition = sensor['sensor']['x'] - distance
-    rightPosition = sensor['sensor']['x'] + distance
-    sensor = sensor['sensor']
-    if(topPosition >= checkRow):
-        topLeft.add(sensor['x'] + abs(checkRow-topPosition))
-        topRight.add(sensor['x'] - abs(checkRow-topPosition))
-        botLeft.add(sensor['x'] - abs(checkRow-sensor['y'])-distance)
-        botRight.add(sensor['x'] + abs(checkRow-sensor['y'])+distance)
-    elif(topPosition <= checkRow): 
-        topLeft.add(sensor['x'] - abs(checkRow-topPosition))
-        topRight.add(sensor['x'] + abs(checkRow-topPosition))
-        if(sensor['y'] <= checkRow):
-            botLeft.add(sensor['x'] + abs(checkRow-sensor['y'])-distance)
-            botRight.add(sensor['x'] - abs(checkRow-sensor['y'])+distance)
-        elif(sensor['y'] >= checkRow):
-            botLeft.add(sensor['x'] + abs(checkRow-sensor['y'])-distance)
-            botLeft.add(sensor['x'] - abs(checkRow-sensor['y'])+distance)
-
+    
 print(len(impossible))
+topLeft=set()
+topRight=set()
+botLeft=set()
+botRight=set()
 
-toLeft=[]
-toRight=[]
+checkColumn=checkRow
 
-for points in topLeft:
-    for pointsPlus in botRight:
-        if(points == pointsPlus - 2):
-            toLeft.append({'br':[points,checkRow],'tl':[pointsPlus,checkRow]})
+for sensor in sensors:
 
-for points in botLeft:
-    for pointsPlus in topRight:
-        if(points == pointsPlus + 2):
-            toRight.append(({'bl':[points-2,checkRow-2],'tr':[pointsPlus,checkRow]}))
+    distance = sensor['distance']
+    topDist = sensor['sensor']['y']-distance
+    botDist = sensor['sensor']['y']+distance
+    # TOP RIGHT
+    if(sensor['sensor']['y']>checkRow):
+        topRight.add(sensor['sensor']['x']+abs(checkRow-topDist))    
+    #BOT RIGHT
+    else:
+        if(sensor['sensor']['y']<checkRow):
+            botRight.add(sensor['sensor']['x']-abs(checkRow-botDist))
+    #TOP LEFT
+    if(sensor['sensor']['y']>checkColumn):
+        topLeft.add(sensor['sensor']['x']-abs(checkColumn-topDist))    
 
-found = False
-for group in toLeft:
-    for x in range(0,checkRow+1):
-        newGroup = {'br':[group['br'][0]+x,group['br'][1]-x]}
-        for perpendicular in toRight:
-            newPerp = {'bl':[perpendicular['bl'][0]-x,perpendicular['bl'][1]+x]}
-            if(newPerp['bl'][1]+1 == newGroup['br'][1]+x and newPerp['bl'][0] == group['br'][0]+1):
-                found = True
-            if(newPerp['bl'][1]+1 == newGroup['br'][1]-x and newPerp['bl'][0] == group['br'][0]+1):
-                found = True
-        if(found):
-            break
-            
+    #BOT LEFT
+    else:
+        if(sensor['sensor']['y']<checkColumn):
+            botLeft.add(sensor['sensor']['x']+abs(checkColumn-botDist))
+
+print('Ei')
+
+        
+
+
+
+        

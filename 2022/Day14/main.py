@@ -114,7 +114,7 @@ def dropSand():
             break
             
 
-printMapBool=False
+printMapBool=True
 part=1
 getMaxCoords()
 drawMap()
