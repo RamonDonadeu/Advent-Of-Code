@@ -23,7 +23,6 @@ const part2 = () => {
       line = line.replaceAll("seven", "seven7seven");
       line = line.replaceAll("eight", "eight8eight");
       line = line.replaceAll("nine", "nine9nine");
-      console.log(line);
       for (let j = 0; j < line.length; j++) {
         if (line[j] > "0" && line[j] <= "9" && firstNumber === -1) {
           firstNumber = line[j];
@@ -33,7 +32,6 @@ const part2 = () => {
         }
       }
       let value = parseInt(firstNumber + lastNumber);
-      console.log(value);
       count += value;
     }
 

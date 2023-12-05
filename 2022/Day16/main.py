@@ -22,10 +22,10 @@ def generateTree():
 def heuristica(valve,time,flow):
     global caveTree
     if caveTree[valve]['open'] == True:
-        return flow
+        return flow 
     else:
         if(caveTree[valve]['flow'] == 0):
-            return flow
+            return flow 
         return flow + caveTree[valve]['flow'] * time
     
 def walkTree(time,recursiveLevel,valve,flow,auxTree):
@@ -40,10 +40,10 @@ def walkTree(time,recursiveLevel,valve,flow,auxTree):
             bestFlow = walkTree(time-1, recursiveLevel-1,valve,flow+caveTree[valve]['flow']*(time-1),auxTree)
             auxTree[valve]['open']=False
         # Skip Actual Valve
-        for explore in caveTree[valve]['accesToValves']:
-            exploreMore = walkTree(time-2, recursiveLevel-1,explore,flow,auxTree)
-            if(exploreMore>bestFlow):
-                bestFlow=exploreMore
+        for valve in caveTree[valve]['accesToValves']:
+            valueHeuristica = walkTree(time-2, recursiveLevel-1,valve,flow,auxTree)
+            if(valueHeuristica>bestFlow):
+                bestFlow=valueHeuristica
         
         
         return bestFlow
@@ -52,11 +52,12 @@ def walkTree(time,recursiveLevel,valve,flow,auxTree):
     
 
 
-recursiveLevel = 1
+recursiveLevel = 6
 generateTree()
 startingValve = 'AA'
 actualValve = startingValve
 timeCounter = 30
+currentFlow = 0
 while timeCounter > 0:
     bestMove = 'Open'
     bestMoveValue = walkTree(timeCounter,recursiveLevel,actualValve,globalFlow,caveTree)
@@ -69,13 +70,16 @@ while timeCounter > 0:
 
     if(bestMove == 'Open'):        
         caveTree[actualValve]['open']=True
-        globalFlow += timeCounter * caveTree[actualValve]['flow']
+        currentFlow += caveTree[actualValve]['flow']   
+
 
     else:
         actualValve = bestMove
     
+         
+    globalFlow += currentFlow
     timeCounter -= 1
+    
+    print(timeCounter, currentFlow, globalFlow)
 
-
-print('ei')
 
