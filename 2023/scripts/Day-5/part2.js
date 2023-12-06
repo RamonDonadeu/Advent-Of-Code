@@ -58,7 +58,7 @@ const getNextLocaion = (source, destination, mapping) => {
   }
 };
 
-const part1 = () => {
+const part2 = () => {
   const filePath = path.join(__dirname, "data.txt");
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
@@ -155,4 +155,4 @@ const part1 = () => {
   });
 };
 
-module.exports = part1;
+module.exports = part2;
