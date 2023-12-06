@@ -8,7 +8,7 @@ const part1 = () => {
       console.error(err);
       return;
     }
-    data = data.split("\r\n");
+    data = data.split("\n");
 
     const seeds = data.splice(0, 1)[0].split("seeds: ")[1].split(" ");
     data.splice(0, 2)
