@@ -12,11 +12,11 @@ const getNextLocaion = (source, destination, mapping) => {
       // If the start is in the range
       if (
         value.from >= start &&
-        value.from <= start + length &&
+        value.from <= start + length - 1 &&
         !changedPosition
       ) {
         // If the end is in the range
-        if (value.to <= start + length) {
+        if (value.to <= start + length - 1) {
           destination.push({
             from: from + value.from - start,
             to: from + value.to - start,
@@ -26,28 +26,28 @@ const getNextLocaion = (source, destination, mapping) => {
         // If the end is not in the range
         else {
           const firstValuePosition = from + value.from - start;
-          const lastValueDestination = from + length;
+          const lastValueDestination = from + length - 1;
           destination.push({
             from: firstValuePosition,
             to: lastValueDestination,
           });
-          source.push({ from: start + length + 1, to: value.to });
+          source.push({ from: start + length, to: value.to });
           changedPosition = true;
         }
       }
       // If the start is before the start of the range
       else if (value.from < start && !changedPosition) {
         // If the end is in the range
-        if (value.to >= start && value.to <= start + length) {
+        if (value.to >= start && value.to <= start + length - 1) {
           destination.push({ from: from, to: from + value.to - start });
           source.push({ from: value.from, to: start - 1 });
           changedPosition = true;
         }
         // If the end is after the range
-        else if (start + length < value.to) {
-          destination.push({ from: from, to: from + length });
+        else if (start + length - 1 < value.to) {
+          destination.push({ from: from, to: from + length - 1 });
           source.push({ from: value.from, to: start - 1 });
-          source.push({ from: start + length + 1, to: value.to });
+          source.push({ from: start + length, to: value.to });
         }
       }
     }
