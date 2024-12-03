@@ -1,0 +1,12 @@
+{
+  "author": "",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "2023",
+  "scripts": {
+    "start": "node index.js $1"
+  },
+  "version": "1.0.0"
+}
